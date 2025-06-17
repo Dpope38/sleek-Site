@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
+import LoginForm from "../components/LoginForm";
+
 import {
   ArrowRight,
   Ticket,
@@ -10,9 +12,12 @@ import {
   HeadphonesIcon,
 } from "lucide-react";
 import CreateTicketModal from "../components/CreateModal";
-import { NavLink } from "react-router-dom";
+// import { NavLink } from "react-router-dom";
 function LandingPage() {
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
+  const [isLoginModal, setIsLoginModal] = useState(false);
+  const [role, setRole] = useState("");
+  // const []
   // const [tickets, setTickets] = useState([]);
 
   //    const handleCreateTicket = (newTicket) => {
@@ -73,22 +78,39 @@ function LandingPage() {
             </div>
 
             <div className="flex items-center space-x-4">
-              <Link
+              {/* <Link
                 to="/admin"
                 className="text-gray-500 hover:text-gray-900 font-medium transition-colors"
               >
                 Admin Portal
-              </Link>
+              </Link> */}
 
+              <button
+                onClick={() => setIsLoginModal(true)}
+                className="text-gray-500 hover:text-gray-900 font-medium transition-colors"
+              >
+                Admin Portal
+                {console.log(isLoginModal)}
+              </button>
+              {/* 
               <Link
                 to="/agent"
                 className="text-gray-600 hover:text-gray-900 font-medium transition-colors"
               >
                 Agent Portal
-              </Link>
+              </Link> */}
+
+              <button
+                onClick={() => setIsLoginModal(true)}
+                className="text-gray-600 hover:text-gray-900 font-medium transition-colors"
+              >
+                Agent Portal
+              </button>
+
+              {/* Modal for Ticket */}
               <button
                 onClick={() => setIsCreateModalOpen(true)}
-                className="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 transition-colors"
+                className="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700  transition-all duration-300"
               >
                 Submit Ticket
               </button>
@@ -169,35 +191,6 @@ function LandingPage() {
         </div>
       </section>
 
-      {/* CTA Section */}
-      {/* <section className="py-20 bg-gray-900">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h2 className="text-4xl font-bold text-white mb-4">
-            Ready to transform your customer support?
-          </h2>
-          <p className="text-xl text-gray-300 mb-8">
-            Join thousands of teams already using TicketFlow to deliver exceptional support experiences.
-          </p>
-          
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <button
-              onClick={() => setIsCreateModalOpen(true)}
-              className="inline-flex items-center px-8 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
-            >
-              Start Free Trial
-              <ArrowRight className="ml-2 w-5 h-5" />
-            </button>
-            
-            <Link
-              to="/admin"
-              className="inline-flex items-center px-8 py-3 border border-gray-600 text-gray-300 rounded-lg hover:bg-gray-800 transition-colors"
-            >
-              Explore Features
-            </Link>
-          </div>
-        </div>
-      </section> */}
-
       {/* Footer */}
       <footer className="bg-white border-t border-gray-200 py-12">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -215,9 +208,14 @@ function LandingPage() {
 
       {isCreateModalOpen && (
         <CreateTicketModal
-          isOpen={isCreateModalOpen}
-          // onClose={() => setIsCreateModalOpen(false)}
-          // onSubmit={handleCreateTicket}
+          onClose={() => setIsCreateModalOpen(false)}
+          isOpen={() => setIsCreateModalOpen(true)}
+        />
+      )}
+      {isLoginModal && (
+        <LoginForm
+          onClose={() => setIsLoginModal(false)}
+          isOpen={() => setIsLoginModal(true)}
         />
       )}
     </div>

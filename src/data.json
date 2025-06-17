@@ -1,0 +1,29 @@
+{
+  "success": true,
+  "data": [
+    {
+      "id": "802049a1-e132-49c0-9e48-51699254c5cd",
+      "title": "Desktop",
+      "description": "I need help for the desktop",
+      "referenceCode": "850962",
+      "status": "RESOLVED",
+      "priority": "MEDIUM",
+      "createdAt": "2025-05-07T21:15:49.772Z",
+      "updatedAt": "2025-06-04T21:52:23.327Z",
+      "assignedAgentId": "552adefc-28db-4226-9f52-131b388d0b54",
+      "clientId": null
+    },
+    {
+      "id": "4af21ed2-7b3a-4338-bf27-842e46ad0085",
+      "title": "head pain",
+      "description": "Head no correct",
+      "referenceCode": "B6A2D6B4",
+      "status": "OPEN",
+      "priority": "LOW",
+      "createdAt": "2025-06-05T12:18:48.582Z",
+      "updatedAt": "2025-06-05T12:18:48.582Z",
+      "assignedAgentId": null,
+      "clientId": "afe9bf26-202a-442d-9993-11656352c049"
+    }
+  ]
+}

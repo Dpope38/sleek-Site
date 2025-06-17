@@ -1,10 +1,20 @@
 import React from "react";
 
 import { Ticket, Users, BarChart3, Settings, Bell } from "lucide-react";
+import { useState } from "react";
 import { Link, useLocation } from "react-router-dom";
+import DropdownMenu from "./DropdownMenu";
+import { useAuth } from "../contexts/AuthContext";
 
 const NavBar = ({ userRole }) => {
   const location = useLocation();
+  const [isOpen, setIsOpen] = useState(true);
+
+  // const menuItems = [
+  //   { label: "Admin", str: "i am" },
+  //   { label: "Logout", str: "i am" },
+  //   // { label: "Settings", href: "/settings" },
+  // ];
 
   const adminNavItems = [
     { icon: BarChart3, label: "Dashboard", path: "/admin" },
@@ -64,12 +74,16 @@ const NavBar = ({ userRole }) => {
               <span className="absolute top-0 right-0 w-2 h-2 bg-red-500 rounded-full"></span>
             </button>
 
-            <div className="flex items-center space-x-2">
+            {/* <div className="flex items-center space-x-2">
               <div className="w-8 h-8 bg-gradient-to-br from-gray-300 to-gray-400 rounded-full"></div>
               <span className="text-sm font-medium text-gray-700 capitalize">
-                {userRole}
+                <ul className="dro">
+                  <li className="cursor-pointer">{userRole}</li>
+                </ul>
               </span>
-            </div>
+            </div> */}
+
+            {isOpen && <DropdownMenu />}
           </div>
         </div>
       </div>

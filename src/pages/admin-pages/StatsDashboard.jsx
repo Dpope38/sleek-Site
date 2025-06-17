@@ -10,88 +10,68 @@ import { useState } from "react";
 import Navbar from "../../components/NavBar";
 import StatsCard from "../../components/StatCard";
 import TicketCard from "../../components/TicketStatus";
+import {
+  useFetchStats,
+  useFetchTicket,
+} from "../../fetching-mutating/fetchQueries";
+import { filterTicket } from "../../utility/filterTicket";
+
+// import
 
 function StatsDashboard() {
   const [searchTerm, setSearchTerm] = useState("");
-  const [tickets, setTickets] = useState([
-    {
-      id: "1",
-      title: "Login issues with mobile app",
-      description:
-        'Unable to login to the mobile application. Getting error message "Invalid credentials" even with correct password.',
-      status: "open",
-      priority: "high",
-      customer: "John Smith",
-      agent: "Sarah Wilson",
-      createdAt: "2024-01-15T10:30:00Z",
-      updatedAt: "2024-01-15T10:30:00Z",
-    },
-    {
-      id: "2",
-      title: "Payment gateway timeout",
-      description:
-        "Payment processing is timing out during checkout process. Multiple customers affected.",
-      status: "in-progress",
-      priority: "urgent",
-      customer: "Alice Johnson",
-      agent: "Mike Chen",
-      createdAt: "2024-01-14T14:22:00Z",
-      updatedAt: "2024-01-15T09:15:00Z",
-    },
-    {
-      id: "3",
-      title: "Feature request: Dark mode",
-      description:
-        "Request for dark mode option in the user interface to reduce eye strain during night usage.",
-      status: "resolved",
-      priority: "low",
-      customer: "Bob Wilson",
-      createdAt: "2024-01-13T16:45:00Z",
-      updatedAt: "2024-01-14T11:30:00Z",
-    },
-  ]);
 
-  const filteredTickets = tickets.filter(
-    (ticket) =>
-      ticket.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      ticket.customer.toLowerCase().includes(searchTerm.toLowerCase())
-  );
+  // Use query custom hooks
+  const { data, isLoading, error } = useFetchStats();
 
-  const stats = [
-    {
-      title: "Total Tickets",
-      value: tickets.length,
-      change: "+12% from last week",
-      changeType: "positive",
-      icon: Ticket,
-      color: "blue",
-    },
-    {
-      title: "Open Tickets",
-      value: tickets.filter((t) => t.status === "open").length,
-      change: "-5% from yesterday",
-      changeType: "positive",
-      icon: Clock,
-      color: "yellow",
-    },
-    {
-      title: "Resolved Today",
-      value: tickets.filter((t) => t.status === "resolved").length,
-      change: "+8% from yesterday",
-      changeType: "positive",
-      icon: CheckCircle,
-      color: "green",
-    },
-    {
-      title: "Active Agents",
-      value: 5,
-      change: "All online",
-      changeType: "neutral",
-      icon: Users,
-      color: "purple",
-    },
-  ];
+  const ticketQuery = useFetchTicket();
 
+  const filteredTickets = filterTicket(ticketQuery, searchTerm);
+
+  const stats =
+    data && data.success
+      ? [
+          {
+            title: "Total Tickets",
+            value: data.data.totalTickets || 0,
+            change: "+12% from last week",
+            changeType: "positive",
+            icon: Ticket,
+            color: "blue",
+          },
+          {
+            title: "Open Tickets",
+            value: data.data.openTickets,
+            change: "-5% from yesterday",
+            changeType: "positive",
+            icon: Clock,
+            color: "yellow",
+          },
+          {
+            title: "Resolved Tickets",
+            value: data.data.closedTickets,
+            change: "+8% from yesterday",
+            changeType: "positive",
+            icon: CheckCircle,
+            color: "green",
+          },
+          {
+            title: "Active Agents",
+            value: 5,
+            change: "All online",
+            changeType: "neutral",
+            icon: Users,
+            color: "purple",
+          },
+        ]
+      : [];
+
+  console.log(` from console.log ${JSON.stringify(data, null, 2)}`);
+
+  if (isLoading) return <p>Loading...</p>;
+  if (error) return <p>Error...</p>;
+
+  //
   return (
     <>
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-8">
@@ -100,14 +80,14 @@ function StatsDashboard() {
           <p className="text-gray-600 mt-1">
             Monitor and manage all support tickets
           </p>
+          {/* <pre>{JSON.stringify(data.data, null, 2)}</pre> */}
         </div>
       </div>
 
-      {/* Stats */}
+      {/* {/* Stats */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-        {stats.map((stat, index) => (
-          <StatsCard key={index} {...stat} />
-        ))}
+        {data.data &&
+          stats.map((stat, index) => <StatsCard key={index} {...stat} />)}
       </div>
 
       {/* Tickets Section */}
@@ -117,6 +97,8 @@ function StatsDashboard() {
             <h2 className="text-xl font-semibold text-gray-900">
               Recent Tickets
             </h2>
+            <h1>{ticketQuery.isLoading ? "Loading..." : null}</h1>
+            <h1>{ticketQuery.isError ? "Error..." : null}</h1>
 
             <div className="flex items-center space-x-3">
               <div className="relative">

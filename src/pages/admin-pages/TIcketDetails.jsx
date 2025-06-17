@@ -1,106 +1,75 @@
-import React, { useState } from "react";
+import React from "react";
+import { MoveLeft, MoveRight, Hourglass } from "lucide-react";
 
-const TicketDetails = () => {
-  const [activeTab, setActiveTab] = useState("info");
-
+function TIcketDetails() {
   return (
-    <div className="min-h-screen bg-gray-100 py-10 px-4 flex justify-center">
-      <div className="bg-white shadow-xl rounded-2xl p-8 w-full max-w-4xl">
-        {/* Header */}
-        <div className="flex justify-between items-start border-b pb-4">
-          <div>
-            <p className="text-sm text-gray-500">
-              Christian Eggert • 2 weeks ago
-            </p>
-            <h2 className="text-xl font-semibold text-gray-800 mt-1">
-              Can’t install macOS High Sierra on my machine
-            </h2>
-          </div>
-          <div className="flex flex-col items-end">
-            <span className="text-xs text-green-700 bg-green-100 px-2 py-1 rounded-full font-medium">
-              Resolved
+    <div className=" p-5 ">
+      <nav className="border-b border-gray-400 flex items-center h-[80px] rounded-t-sm bg-gray-200">
+        <div className="flex justify-between items-center">
+          <div className="flex justify-evenly items-center space-x-5 pl-4 mb-4">
+            <MoveLeft className="text-blue-500" />
+            <MoveRight className="text-blue-500" />
+            <h1 className="font-poppins font-bold text-2xl">
+              Ticket #3298hfru
+            </h1>
+
+            <span className="bg-amber-300">
+              <Hourglass className="w-3 h-3" />
             </span>
-            <p className="text-xs text-gray-500 mt-2">19 Jan 2019</p>
-            <ul className="text-xs text-gray-600 mt-2 space-y-1 text-right">
-              <li>📎 Onboarding</li>
-              <li>🏢 Office Stuff</li>
-            </ul>
+            <p>Pending</p>
           </div>
         </div>
-
-        {/* Tabs */}
-        <div className="mt-6 flex space-x-6 text-sm border-b pb-2">
-          {["info", "updates", "notes"].map((tab) => (
-            <button
-              key={tab}
-              onClick={() => setActiveTab(tab)}
-              className={`${
-                activeTab === tab
-                  ? "text-blue-600 border-b-2 border-blue-600 font-semibold"
-                  : "text-gray-600"
-              } capitalize pb-1`}
-            >
-              {tab === "info" && "All Info"}
-              {tab === "updates" && "Status Updates (2)"}
-              {tab === "notes" && "Internal Notes (3)"}
-            </button>
-          ))}
+      </nav>
+      <main>
+        <div className=" flex justify-between items-center h-[70px]">
+          <div>
+            <h1 className="text-[20px] font-poppins font-semibold  text-gray-700">
+              Decription: I need help with my purchase
+            </h1>
+            <p className="text-sm font-bold font-poppins text-gray-500">
+              Via Email
+            </p>
+          </div>
         </div>
+        <hr className="text-gray-400" />
 
-        {/* Messages */}
-        <div className="mt-6 space-y-6 text-sm text-gray-700">
-          {activeTab === "info" && (
-            <>
-              <div className="bg-gray-50 p-4 rounded-xl">
-                <p>
-                  I'm trying to upgrade to macOS High Sierra from Yosemite since
-                  10.10 is getting old now and wasn't the best OS to start, but
-                  I can’t seem to get beyond the "Install macOS High Sierra"
-                  installation manager.
-                </p>
-                <div className="text-right mt-2 text-xs text-gray-500">
-                  — Christian Eggert • 2 weeks ago
-                </div>
+        <section>
+          <div className="">
+            <div className="flex mt-5 flex-row mb-5">
+              <div className=" bg-pink-600 flex justify-center items-center rounded-[50px] w-[60px] h-[60px]">
+                <h1 className="text-amber-100 text-2xl font-poppins font-semibold">
+                  J
+                </h1>
               </div>
-              <div className="bg-green-50 p-4 rounded-xl">
-                <p>✅ Request status updated to resolved</p>
-                <div className="text-right mt-2 text-xs text-gray-500">
-                  — Johnny Harris • 2 weeks ago
-                </div>
+              <div className="ml-3">
+                <h3>contact</h3>
+                <p>From Mr Andy</p>
               </div>
-            </>
-          )}
-
-          {activeTab === "updates" && (
-            <div className="text-gray-600 italic">Status update history...</div>
-          )}
-          {activeTab === "notes" && (
-            <div className="text-gray-600 italic">
-              Internal notes go here...
             </div>
-          )}
-        </div>
-
-        {/* Footer Message Box */}
-        <div className="mt-8 border-t pt-4">
-          <textarea
-            placeholder="Send a message back or add a note for your team"
-            className="w-full border rounded-xl p-3 text-sm outline-none focus:ring-2 focus:ring-blue-300 resize-none"
-            rows={3}
-          ></textarea>
-          <div className="mt-3 flex justify-between items-center">
-            <label className="text-sm flex items-center space-x-2">
-              <input type="checkbox" className="rounded" />
-              <span>Send as internal note</span>
-            </label>
-            <button className="bg-blue-600 text-white px-4 py-2 rounded-xl text-sm hover:bg-blue-700">
-              Send message
-            </button>
+            <div className="mt-4  pb-5">
+              <p className="text-[20px] text-wrap">
+                Lorem ipsum dolor sit, amet consectetur adipisicing elit.
+                Maiores dolor pariatur sapiente voluptate incidunt asperiores
+                dolorum dignissimos totam fuga! Fuga accusamus ipsum, quae
+                beatae ad nemo ipsa quia explicabo cumque.
+              </p>
+            </div>
           </div>
-        </div>
-      </div>
+        </section>
+        <hr />
+
+        <section>
+          <div>
+            Lorem ipsum dolor sit amet consectetur adipisicing elit. Reiciendis,
+            itaque incidunt. A ipsa quod excepturi perferendis vitae repellat
+            asperiores aliquam consequuntur rerum, maiores alias, maxime
+            cupiditate eius fugiat, ducimus esse!
+          </div>
+        </section>
+        <hr />
+      </main>
     </div>
   );
-};
+}
 
-export default TicketDetails;
+export default TIcketDetails;

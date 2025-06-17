@@ -54,7 +54,14 @@ function TeamPage() {
 
   return (
     <div className="py-7 px-6">
-      <h1 className="text-3xl font-bold">Teams</h1>
+      <div className="flex justify-around">
+        <div>
+          <h1 className="text-3xl font-bold">Teams</h1>
+        </div>
+        <div>
+          <p>Hallos</p>
+        </div>
+      </div>
       <div className="mt-3">
         <button
           className="cursor-pointer bg-gradient-to-b focus:outline-offset-2 focus:outline-2 focus:outline-blue-500  from-indigo-500 to-indigo-600 shadow-[0px_4px_32px_0_rgba(99,102,241,.70)] px-6 py-3 rounded-xl border-[1px] border-slate-500 text-white font-medium group"
