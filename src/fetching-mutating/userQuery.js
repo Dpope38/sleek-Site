@@ -1,15 +1,14 @@
 import { useQuery} from "@tanstack/react-query";
 import axios from "axios";
 import {useAuth} from "../contexts/AuthContext.jsx"
+import { useMemo } from "react";
 
 
 
-
-
-const fetchStats = async (auth)=>{
+const fetchUsers= async (auth)=>{
      try {
       const data = await axios.get(
-        `${import.meta.env.VITE_BASEURL_API}admin/reports`,
+        `${import.meta.env.VITE_BASEURL_API}admin/users`,
         {
           headers: {
             "Content-Type": "application/json",
@@ -26,11 +25,11 @@ const fetchStats = async (auth)=>{
     }
 }
 
-export function useFetchStats(){
+export function useFetchUsers(){
     const [auth] = useAuth()
     return useQuery({
-         queryKey: ["fetchStats"],
-    queryFn: ()=>fetchStats(auth),
+         queryKey: ["userQuery"],
+    queryFn: ()=>fetchUsers(auth),
 
     enabled: !!auth?.token,
     })

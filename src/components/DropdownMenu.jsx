@@ -1,16 +1,28 @@
 import { useState } from "react";
 import { ChevronDown } from "lucide-react";
+import { useNavigate } from "react-router-dom";
+import { useAuth } from "../contexts/AuthContext";
+import toast from "react-hot-toast";
 function DropdownMenu() {
   // const menuItems = [
   //   { label: "Admin", str: "i am" },
   //   { label: "Logout", str: "i am" },
   //   // { label: "Settings", href: "/settings" },
   // ];
+  const navigate = useNavigate();
   const [isOpen, setIsOpen] = useState(false);
+  const [auth, setAuth] = useAuth();
+  const logout = () => {
+    setAuth({ ...auth, user: null, token: "" });
+    localStorage.removeItem("token");
+    toast.success("Logout successful");
+
+    navigate("/");
+  };
 
   const menuItems = [
     { label: "Admin", str: "I am Admin" },
-    { label: "Logout", str: "I am Logout" },
+    { label: "Logout", str: logout },
     // { label: "Settings", href: "/settings" },
   ];
 
@@ -33,9 +45,13 @@ function DropdownMenu() {
               <li
                 key={i}
                 className="px-4 py-2 hover:bg-gray-100 cursor-pointer"
-                onClick={() => setIsOpen(false)}
               >
-                <h1 className="block text-gray-700">{item.label}</h1>
+                <h1
+                  onClick={item.label === "Logout" && (() => logout())}
+                  className="block text-gray-700"
+                >
+                  {item.label}
+                </h1>
                 <p className="text-xs text-gray-500">{item.str}</p>
               </li>
             ))}

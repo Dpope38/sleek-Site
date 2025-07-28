@@ -41,7 +41,7 @@ function App() {
               <Route path="" element={<StatsDashboard />} />
               <Route path="users" element={<TeamPage />} />
               <Route path="tickets" element={<TicketGrid />} />
-              <Route path="tickets/:ticketId" element={<TIcketDetails />} />
+              <Route path="tickets/:refCode" element={<TIcketDetails />} />
             </Route>
           </Route>
           <Route path="/agent" element={<AgentDashboard />} />

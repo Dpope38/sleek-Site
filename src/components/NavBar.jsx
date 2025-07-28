@@ -6,7 +6,7 @@ import { Link, useLocation } from "react-router-dom";
 import DropdownMenu from "./DropdownMenu";
 import { useAuth } from "../contexts/AuthContext";
 
-const NavBar = ({ userRole }) => {
+const NavBar = ({ userRole, ...props }) => {
   const location = useLocation();
   const [isOpen, setIsOpen] = useState(true);
 
@@ -31,7 +31,7 @@ const NavBar = ({ userRole }) => {
   const navItems = userRole === "admin" ? adminNavItems : agentNavItems;
 
   return (
-    <nav className=" bg-linear-to-r from-blue-300 to-blue-400 border-b border-b-blue-300 shadow-sm">
+    <nav className=" bg-linear-to-r from-blue-300 to-blue-400 border-b sticky top-0 z-10 w-full border-b-blue-300 shadow-sm">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between h-16">
           {/* Left section: Logo and Navigation Links */}

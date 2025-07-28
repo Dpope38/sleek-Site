@@ -1,72 +1,191 @@
-import React from "react";
-import { MoveLeft, MoveRight, Hourglass } from "lucide-react";
+import {
+  ArrowLeft,
+  BellPlus,
+  CalendarPlus,
+  UserRoundPlus,
+  MessageSquareMore,
+  CalendarCheck2,
+  Captions,
+  Tag,
+  Mail,
+} from "lucide-react";
+import FormDropDown from "../../components/FormDropDown.jsx";
+// import { useMutation, useQueryClient } from "@tanstack/react-query";
+
+import { useState } from "react";
+import TextArea from "../../components/TextArea";
+import { useParams, useLocation } from "react-router-dom";
+import { useUpdateTicket } from "../../fetching-mutating/updateUser.js";
+import { useFetchUsers } from "../../fetching-mutating/userQuery.js";
+import formatDateTime from "../../utility/dataFormat.js";
+import getStatusBadge from "../../utility/dataFormat.js";
+import Accordion from "../../components/Accordion";
 
 function TIcketDetails() {
+  const [selectAgent, setSelectAgent] = useState("");
+  const [status, setStatus] = useState({
+    status: "OPEN",
+  });
+  const location = useLocation();
+  const locationState = location.state;
+  const { refCode } = useParams();
+
+  const ticketData = locationState.find((ticket) => ticket);
+
   return (
-    <div className=" p-5 ">
-      <nav className="border-b border-gray-400 flex items-center h-[80px] rounded-t-sm bg-gray-200">
+    <div className=" mt-3 px-11">
+      <header className="sticky bg-gray-100 top-16 z-10 border-b py-4">
         <div className="flex justify-between items-center">
-          <div className="flex justify-evenly items-center space-x-5 pl-4 mb-4">
-            <MoveLeft className="text-blue-500" />
-            <MoveRight className="text-blue-500" />
-            <h1 className="font-poppins font-bold text-2xl">
-              Ticket #3298hfru
-            </h1>
-
-            <span className="bg-amber-300">
-              <Hourglass className="w-3 h-3" />
-            </span>
-            <p>Pending</p>
-          </div>
-        </div>
-      </nav>
-      <main>
-        <div className=" flex justify-between items-center h-[70px]">
-          <div>
-            <h1 className="text-[20px] font-poppins font-semibold  text-gray-700">
-              Decription: I need help with my purchase
-            </h1>
-            <p className="text-sm font-bold font-poppins text-gray-500">
-              Via Email
-            </p>
-          </div>
-        </div>
-        <hr className="text-gray-400" />
-
-        <section>
-          <div className="">
-            <div className="flex mt-5 flex-row mb-5">
-              <div className=" bg-pink-600 flex justify-center items-center rounded-[50px] w-[60px] h-[60px]">
-                <h1 className="text-amber-100 text-2xl font-poppins font-semibold">
-                  J
-                </h1>
-              </div>
-              <div className="ml-3">
-                <h3>contact</h3>
-                <p>From Mr Andy</p>
-              </div>
+          <div className="flex items-center gap-4">
+            <div className=" flex items-center px-2 py-2">
+              <button className="text-sm flex font-semibold gap-2 items-center hover:bg-gray-100 text-blue-700 hover:underline">
+                <span>
+                  <ArrowLeft />
+                </span>
+                Back to Dashboard
+              </button>
             </div>
-            <div className="mt-4  pb-5">
-              <p className="text-[20px] text-wrap">
-                Lorem ipsum dolor sit, amet consectetur adipisicing elit.
-                Maiores dolor pariatur sapiente voluptate incidunt asperiores
-                dolorum dignissimos totam fuga! Fuga accusamus ipsum, quae
-                beatae ad nemo ipsa quia explicabo cumque.
-              </p>
+            <div className="flex items-center gap-2">
+              <BellPlus color="#27548A" />
+              <span className="text-blue-600 font-semibold">New Ticket</span>
             </div>
           </div>
-        </section>
-        <hr />
-
-        <section>
-          <div>
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Reiciendis,
-            itaque incidunt. A ipsa quod excepturi perferendis vitae repellat
-            asperiores aliquam consequuntur rerum, maiores alias, maxime
-            cupiditate eius fugiat, ducimus esse!
+        </div>
+      </header>
+      <main className="py-4">
+        <div className="grid  py-4  gap-6 lg:grid-cols-3">
+          <div className="col-span-3 rounded-2xl px-3 py-3 border border-gray-200 space-y-6">
+            <div className="flex items-center space-x-2">
+              <h1 className="font-poppins font-semibold">{` TK-ID #tick ${ticketData.referenceCode}`}</h1>
+              <span
+                className={`rounded-[11px] text-sm ${getStatusBadge(
+                  ticketData.status
+                )}`}
+              >
+                Open
+              </span>
+            </div>
+            <div className="flex text-sm items-center gap-2">
+              <Captions />
+              <p className="font-poppins font-extrabold text-gray-600">{`Topic: ${ticketData.title}`}</p>
+            </div>
+            <div className="flex justify-between items-center">
+              <div className="flex items-center gap-2">
+                <CalendarPlus />
+                <span className="text-gray-500">
+                  {` Created: ${formatDateTime(ticketData.createdAt)}`}
+                </span>
+              </div>
+            </div>
           </div>
-        </section>
-        <hr />
+        </div>
+        <div className="col-span-3 rounded-2xl px-3 py-3 border border-gray-200 space-y-6">
+          <div className="flex items-center space-x-2">
+            <h1 className="font-poppins font-semibold">
+              {`Topic: ${ticketData.title}`}
+            </h1>
+          </div>
+          <div className="flex justify-between items-center">
+            <div className="flex items-center text-wrap gap-2">
+              <p className="text-gray-500 leading-5 font-semibold fo">{`Description: ${ticketData.description}`}</p>
+            </div>
+          </div>
+        </div>
+        <div className="col-span-3 rounded-2xl my-4 px-3 py-3 border border-gray-200 space-y-6">
+          <div className="flex items-center space-x-2">
+            <h1 className="font-poppins font-semibold"> Client Information</h1>
+          </div>
+          <div className="flex items-center gap-2">
+            <div className="flex items-center justify-center w-10 h-10 rounded-full bg-blue-500 text-white">
+              <h1>
+                {ticketData.client.name
+                  .split(" ")
+                  .map((n) => n[0])
+                  .join("")}
+              </h1>
+            </div>
+
+            <div>
+              <h1 className="text-[25px] font-semibold">
+                {ticketData.client.name}
+              </h1>
+              <p className="text-gray-500">{ticketData.client.email}</p>
+            </div>
+          </div>
+        </div>
+
+        <div className="col-span-3 rounded-2xl my-4 px-3 py-3 border border-gray-200 space-y-6">
+          <div className="flex items-center space-x-2">
+            <h1 className="font-poppins font-semibold">
+              Send Message to Client
+            </h1>
+          </div>
+          <div className="flex items-center">
+            {/* <TextArea label="message" postText="hello" /> */}
+          </div>
+        </div>
+        <div className="col-span-3 rounded-2xl my-4 px-3 py-3 border border-gray-200 space-y-6">
+          <div className="flex items-center space-x-2">
+            <Tag />
+            <h1 className="font-poppins font-semibold"> Update Status</h1>
+          </div>
+          <div className="flex items-center gap-2">
+            <form className="space-y-4 w-full">
+              <label
+                htmlFor="status"
+                className="block text-sm font-poppins font-medium text-gray-700 mb-1"
+              >
+                Current Status
+              </label>
+              <select
+                name="status"
+                value={status.status}
+                onChange={(e) => setStatus(e.target.value)}
+                className="w-full px-3 py-2 hover:bg-gray-200 cursor-pointer space-x-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              >
+                <option value="PENDING">Pending</option>
+                <option value="OPEN">Open</option>
+                <option value="RESOLVED">Resolved</option>
+                <option value="CLOSED">Closed</option>
+              </select>
+              <button
+                className="w-full bg-slate-950 text-gray-200 text-[17px] hover:bg-slate-800 py-2 rounded-[13px] font-poppins"
+                type="submit"
+              >
+                Update Status
+              </button>
+            </form>
+          </div>
+        </div>
+        <div className="col-span-3 rounded-2xl my-4 px-3 py-3 border border-gray-200 space-y-6">
+          <div className="flex items-center space-x-2">
+            <UserRoundPlus />
+            <h1 className="font-poppins font-semibold"> Assign Agent</h1>
+          </div>
+          <FormDropDown refCode={ticketData.referenceCode} />
+        </div>
+
+        <div className="col-span-3 rounded-2xl my-4 px-3 py-3 border border-gray-200 space-y-6">
+          <div className="flex items-center space-x-2">
+            <h1 className="font-poppins text-2xl font-semibold">
+              Client Information
+            </h1>
+          </div>
+          <div className="flex flex-col items-center gap-2">
+            <button className="flex flex-row gap-2 w-full py-2 px-3 rounded-[11px] hover:bg-gray-200 cursor-pointer">
+              <span>
+                <Mail />
+              </span>
+              <p>Email Client</p>
+            </button>
+            <button className="flex flex-row gap-2 w-full py-2 px-3 rounded-[11px] hover:bg-gray-200 cursor-pointer">
+              <span>
+                <CalendarCheck2 />
+              </span>
+              <p>Email Client</p>
+            </button>
+          </div>
+        </div>
       </main>
     </div>
   );

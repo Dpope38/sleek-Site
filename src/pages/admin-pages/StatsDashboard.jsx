@@ -33,7 +33,7 @@ function StatsDashboard() {
       ? [
           {
             title: "Total Tickets",
-            value: data.data.totalTickets || 0,
+            value: data.data?.totalTickets || 0,
             change: "+12% from last week",
             changeType: "positive",
             icon: Ticket,
@@ -49,7 +49,7 @@ function StatsDashboard() {
           },
           {
             title: "Resolved Tickets",
-            value: data.data.closedTickets,
+            value: data.data.resolvedTickets,
             change: "+8% from yesterday",
             changeType: "positive",
             icon: CheckCircle,

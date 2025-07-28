@@ -126,7 +126,6 @@ function LandingPage() {
             <h1 className="text-5xl md:text-6xl font-bold text-gray-900 mb-6">
               lorem Ipsom
               <span className="bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
-                {" "}
                 Support
               </span>
             </h1>

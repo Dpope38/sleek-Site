@@ -1,136 +1,78 @@
 import { useState } from "react";
-import { Info } from "lucide-react";
-const usersData = [
-  {
-    id: 1,
-    name: "Maribel_Koss",
-    username: "@maribelk",
-    avatar: "https://i.pravatar.cc/100?img=1",
-    subscribed: "Oct 01, 2022",
-    renew: null,
-    renewNote: "Expires soon",
-    price: "$3.00",
-    status: "active",
-  },
-  {
-    id: 2,
-    name: "Constantin.Morar76",
-    username: "@constantin.",
-    avatar: "https://i.pravatar.cc/100?img=2",
-    subscribed: "Sep 02, 2022",
-    renew: "Apr 17, 2023",
-    renewNote: "chicken",
-    price: "$7.00",
-    status: "active",
-  },
-  {
-    id: 3,
-    name: "Jerrold84",
-    username: "@jerrold84",
-    avatar: "https://i.pravatar.cc/100?img=3",
-    subscribed: "Oct 01, 2022",
-    renew: null,
-    renewNote: null,
-    price: "$4.00",
-    status: "active",
-  },
-  {
-    id: 4,
-    name: "Kali40",
-    username: "@kaliunder",
-    avatar: "https://i.pravatar.cc/100?img=4",
-    subscribed: "Nov 17, 2022",
-    renew: null,
-    renewNote: null,
-    price: "$7.00",
-    status: "inactive",
-  },
-];
+import {
+  Users,
+  UserPlus,
+  Settings,
+  Shield,
+  BarChart3,
+  FileText,
+  Calendar,
+  Bell,
+  Search,
+  LogOut,
+} from "lucide-react";
+import UserCard from "../../components/UserCard.jsx";
+import TeamFormCreate from "../../components/TeamFormCreate.jsx";
+import SearchUser from "../../components/SearchUser.jsx";
+
+import { useFetchUsers } from "../../fetching-mutating/userQuery.js";
 
 function TeamPage() {
-  const [tab, setTab] = useState("active");
-
-  const filteredUser = usersData.filter((user) => (user.status = tab));
+  const useData = useFetchUsers();
+  const [active, setActive] = useState(null);
+  // if (useData) return JSON.stringify(useData?.data?.data, null, 2);
 
   return (
-    <div className="py-7 px-6">
-      <div className="flex justify-around">
-        <div>
-          <h1 className="text-3xl font-bold">Teams</h1>
+    <div className="flex  justify-between  ">
+      <div className="h-full bg-cyan-50 border-r border-cyan-200 flex flex-col">
+        {/* Header */}
+        <div className="p-6 border-b border-cyan-200">
+          <h2 className="text-xl font-bold text-cyan-900">Team Admin</h2>
+          <p className="text-sm text-cyan-600 mt-1">Management Dashboard</p>
         </div>
-        <div>
-          <p>Hallos</p>
-        </div>
+        {/* Navigation Menu */}
+        <nav className="flex-1 p-4">
+          <ul className="space-y-2">
+            <li>
+              <button
+                onClick={() => setActive(null)}
+                className="w-full flex items-center px-4 py-3 rounded-lg text-left transition-colors duration-200 bg-cyan-100 text-cyan-900 hover:bg-cyan-200 shadow-sm"
+              >
+                <Users className="w-5 h-5 mr-3" />
+                <span className="font-medium">Team Overview</span>
+              </button>
+            </li>
+            <li>
+              <button
+                onClick={() => setActive("create")}
+                className="w-full flex items-center px-4 py-3 rounded-lg text-left transition-colors duration-200 bg-cyan-100 text-cyan-900 hover:bg-cyan-200 shadow-sm"
+              >
+                <UserPlus className="w-5 h-5 mr-3" />
+                <span className="font-medium">Create User</span>
+              </button>
+            </li>
+            <li>
+              <button
+                onClick={() => setActive("search")}
+                className="w-full flex items-center px-4 py-3 rounded-lg text-left transition-colors duration-200 bg-cyan-100 text-cyan-900 hover:bg-cyan-200 shadow-sm"
+              >
+                <UserPlus className="w-5 h-5 mr-3" />
+                <span className="font-medium">Search A member</span>
+              </button>
+            </li>
+          </ul>
+        </nav>
       </div>
-      <div className="mt-3">
-        <button
-          className="cursor-pointer bg-gradient-to-b focus:outline-offset-2 focus:outline-2 focus:outline-blue-500  from-indigo-500 to-indigo-600 shadow-[0px_4px_32px_0_rgba(99,102,241,.70)] px-6 py-3 rounded-xl border-[1px] border-slate-500 text-white font-medium group"
-          onClick={() => setTab("active")}
-        >
-          <div className="relative overflow-hidden">
-            <p className="group-hover:-translate-y-7 font-bold duration-[1.125s] ease-[cubic-bezier(0.19,1,0.22,1)]">
-              Active Member
-            </p>
-            <p className="absolute font-bold top-7 left-0 group-hover:top-0 duration-[1.125s] ease-[cubic-bezier(0.19,1,0.22,1)]">
-              70 members
-            </p>
-          </div>
-        </button>
-
-        <button className=" mx-2.5 cursor-pointer bg-gradient-to-b from-indigo-500 to-indigo-600 shadow-[0px_4px_32px_0_rgba(99,102,241,.70)] px-6 py-3 rounded-xl border-[1px] border-slate-500 text-white focus:outline-offset-2 focus:outline-2 focus:outline-blue-500  font-medium group">
-          <div className="relative overflow-hidden">
-            <p className="group-hover:-translate-y-7 font-bold duration-[1.125s] ease-[cubic-bezier(0.19,1,0.22,1)]">
-              Inactive Members
-            </p>
-            <p className="absolute font-bold top-7 left-0 group-hover:top-0 duration-[1.125s] ease-[cubic-bezier(0.19,1,0.22,1)]">
-              70 members
-            </p>
-          </div>
-        </button>
-        {/* User Cards */}
-        <div className="mt-6 space-y-4">
-          {filteredUser.map((user) => (
-            <div
-              key={user.id}
-              className="flex items-center justify-between p-4 bg-gray-50 rounded-lg border border-gray-200"
-            >
-              {/* user Info */}
-              <div className="flex items-center space-x-4">
-                <img
-                  src={user.avatar}
-                  alt={user.name}
-                  className="w-12 h-12 rounded-full"
-                />
-                <div>
-                  <div className="font-semibold text-gray-800 flex items-center gap-1">
-                    {user.name}
-                    <span className="text-blue-500">✔</span>
-                  </div>
-                  <p className="text-sm text-gray-500">{user.username}</p>
-                </div>
-              </div>
-              {/* // *Date and Price */}
-
-              <div className="flex items-center gap-10 text-2xl text-gray-700">
-                <div>
-                  <p className="font-medium text-gray-500">Renew Date</p>
-                  <p className="flex items-center gap-1">
-                    {user.renew}
-                    {user.renewNote && (
-                      <span className="text-yellow-600 flex items-center text-xs">
-                        <Info className="w-4 h-4" />
-                        {user.renewNote}
-                      </span>
-                    )}
-                  </p>
-                </div>
-              </div>
-            </div>
-          ))}
-        </div>
-      </div>
+      <main className="w-full  overflow-y-auto py-5">
+        <UserCard Userdata={useData?.data?.data} />
+      </main>
+      {active === "create" && <TeamFormCreate />}
+      {active === "search" && <SearchUser />}
     </div>
   );
 }
 
 export default TeamPage;
+
+//  {menuItems.map((item, index) => {
+// const IconComponent = item.icon;
