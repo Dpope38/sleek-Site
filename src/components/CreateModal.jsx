@@ -1,12 +1,33 @@
 // import React, { useState } from "react";
 import { X } from "lucide-react";
+import { motion } from "framer-motion";
+
+const modalVariants = {
+  hidden: { opacity: 0, scale: 0 },
+  visible: {
+    opacity: 1,
+    // y: 0,
+    transition: {
+      // delay: 0.6,
+      duration: 0.4,
+    },
+    scale: 1,
+  },
+  exit: { opacity: 0, scale: 0.8, transition: { duration: 0.3 } },
+};
 
 const CreateTicketModal = ({ isOpen, onClose, onSubmit }) => {
   // const [isModal, setIsModal] = useState(true);
   if (!isOpen) return null;
   // No local state here; all state and handlers come from parent via props.
   return (
-    <div className="fixed inset-0  bg-black/60 flex items-center justify-center z-50">
+    <motion.div
+      variants={modalVariants}
+      initial="hidden"
+      animate="visible"
+      exit="exit"
+      className="fixed inset-0  bg-black/60 flex items-center justify-center z-50"
+    >
       <div className="bg-white rounded-lg p-6 w-full max-w-md mx-4">
         <div className="flex items-center justify-between mb-4">
           <h2 className="text-xl font-poppins font-semibold text-black">
@@ -88,7 +109,7 @@ const CreateTicketModal = ({ isOpen, onClose, onSubmit }) => {
           </div>
         </form>
       </div>
-    </div>
+    </motion.div>
   );
 };
 

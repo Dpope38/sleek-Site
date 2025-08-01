@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import LoginForm from "../components/LoginForm";
+import { motion, stagger, AnimatePresence } from "framer-motion";
+import ITSplash from "../assets/spalsh-I.T.jpg";
 
 import {
   ArrowRight,
@@ -62,64 +64,149 @@ function LandingPage() {
         "Round-the-clock customer support to help you get the most out of TicketFlow.",
     },
   ];
+
+  const heroVariant = {
+    hidden: { opacity: 0, x: -20 },
+    visible: {
+      opacity: 1,
+      x: 0,
+      transition: {
+        delay: 0.6,
+        duration: 1,
+        when: "beforeChildren",
+        delayChildren: stagger(0.6),
+      },
+    },
+  };
+
+  const heroChildren = {
+    hidden: { opacity: 0, x: -20 },
+    visible: {
+      opacity: 1,
+      x: 0,
+      transition: {
+        delay: 0.6,
+      },
+    },
+  };
+
   return (
-    <div className="min-h-screen  bg-linear-to-r from-blue-700 to-blue-400">
+    <div className="min-h-screen  bg-gray-50">
       {/* Navigation */}
-      <nav className="bg-cyan-200 border-b border-b-cyan-100">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between h-16">
-            <div className="flex items-center space-x-2">
-              <div className="w-8 h-8 bg-gradient-to-br from-blue-500 to-purple-600 rounded-lg flex items-center justify-center">
-                <Ticket className="w-6 h-6 text-white" />
-              </div>
-              <span className="text-3xl font-bold text-gray-900">
-                TicketFlow
-              </span>
+      <motion.nav
+        initial={{ opacity: 0, y: -20 }}
+        animate={{ opacity: 1, y: 2 }}
+        transition={{ delay: 0.2, duration: 0.8 }}
+        className="w-full mx-auto px-4 sm:px-6 h-[calc(100vh - 5rem)] z-100 bg-gray-50 fixed lg:px-8"
+      >
+        <div className="flex justify-between h-16">
+          <div className="flex items-center space-x-2">
+            <div className="w-8 h-8 bg-gradient-to-br from-blue-500 to-purple-600 rounded-lg flex items-center justify-center">
+              <Ticket className="w-6 h-6 text-white" />
             </div>
+            <span className="text-3xl font-bold text-gray-600">
+              GreenSprings.
+            </span>
+          </div>
 
-            <div className="flex items-center space-x-4">
-              {/* <Link
-                to="/admin"
-                className="text-gray-500 hover:text-gray-900 font-medium transition-colors"
-              >
-                Admin Portal
-              </Link> */}
+          <div className="flex items-center space-x-4">
+            <motion.button
+              whileHover={{
+                scale: 1.05,
+                backgroundColor: "#3D74B6",
+                color: "#FCF8DD",
+              }}
+              onClick={() => setIsLoginModal(true)}
+              className="text-gray-800 hover:text-gray-900  border border-blue-400  px-3 py-2 rounded-md  font-medium "
+            >
+              Admin Portal
+              {console.log(isLoginModal)}
+            </motion.button>
 
-              <button
-                onClick={() => setIsLoginModal(true)}
-                className="text-gray-500 hover:text-gray-900 font-medium transition-colors"
-              >
-                Admin Portal
-                {console.log(isLoginModal)}
-              </button>
-              {/* 
-              <Link
-                to="/agent"
-                className="text-gray-600 hover:text-gray-900 font-medium transition-colors"
-              >
-                Agent Portal
-              </Link> */}
+            <motion.button
+              whileHover={{
+                scale: 1.05,
+                backgroundColor: "#3D74B6",
+                color: "#FCF8DD",
+              }}
+              onClick={() => setIsLoginModal(true)}
+              className="text-gray-800 hover:text-gray-900  border border-blue-400  px-3 py-2 rounded-md  font-medium "
+            >
+              Agent Portal
+            </motion.button>
 
-              <button
-                onClick={() => setIsLoginModal(true)}
-                className="text-gray-600 hover:text-gray-900 font-medium transition-colors"
-              >
-                Agent Portal
-              </button>
-
-              {/* Modal for Ticket */}
-              <button
-                onClick={() => setIsCreateModalOpen(true)}
-                className="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700  transition-all duration-300"
-              >
-                Submit Ticket
-              </button>
-            </div>
+            {/* Modal for Ticket */}
+            <button
+              onClick={() => setIsCreateModalOpen(true)}
+              className="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700  transition-all duration-300"
+            >
+              Create Ticket
+            </button>
           </div>
         </div>
-      </nav>
+      </motion.nav>
+      <header className=" flex justify-between h-screen items-center w-full">
+        <motion.section
+          variants={heroVariant}
+          initial="hidden"
+          animate="visible"
+          className="py-20 w-1/2 "
+        >
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="text-center text-wrap">
+              <h1 className="text-5xl md:text-6xl font-bold text-gray-900 mb-6">
+                Welcome to Greensprings <br />
+                <span className="bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
+                  School IT/Maintenance Support Desk
+                </span>
+              </h1>
+              <motion.p
+                variants={heroChildren}
+                className="text-xl text-wrap text-gray-600 mb-8 max-w-3xl mx-auto"
+              >
+                a support ticket system where you can log in any of your
+                complaints/queries/enquiries.
+              </motion.p>
 
-      {/* Hero Section */}
+              <div className="flex flex-col sm:flex-row gap-4 justify-center">
+                <button
+                  // onClick={}
+                  className="inline-flex items-center px-8 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-all duration-200 shadow-lg hover:shadow-xl"
+                >
+                  Thoughts
+                  <ArrowRight className="ml-2 w-5 h-5" />
+                </button>
+
+                <div
+                  to="/admin"
+                  className="inline-flex items-center px-8 py-3 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors"
+                >
+                  thoughts
+                </div>
+              </div>
+            </div>
+          </div>
+        </motion.section>
+
+        <motion.div
+          initial={{ opacity: 0, y: -20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.6, duration: 1 }}
+          className="w-1/2 flex  px-6 items-center relative "
+        >
+          <div className="flex items-center justify-center overflow-hidden">
+            <img
+              className="object-cover rounded-[12px]"
+              style={{ height: "auto", width: "100%" }}
+              src={ITSplash}
+              alt="I.T Splash "
+            />
+          </div>
+          <div className="absolute top-100 left-0 blur-sm w-full bg-gray-50 bg-blend-soft-light h-20 z-10" />
+        </motion.div>
+      </header>
+
+      {/* Hero Section
       <section className="py-20 bg-gradient-to-br from-blue-50 to-purple-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center">
@@ -153,14 +240,15 @@ function LandingPage() {
             </div>
           </div>
         </div>
-      </section>
+      </section> */}
 
       {/* Features Section */}
       <section className="py-20 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
-            <h2 className="text-4xl font-bold text-gray-900 mb-4">
-              Everything you need to excel at customer support
+            <h2 className="text-4xl text-wrap font-bold text-gray-900 mb-4">
+              The aim is to improve the customer experience and to efficiently
+              resolve any service disruption.
             </h2>
             <p className="text-xl text-gray-600 max-w-2xl mx-auto">
               Powerful features designed to help your team deliver outstanding
@@ -197,26 +285,30 @@ function LandingPage() {
             <div className="w-8 h-8 bg-gradient-to-br from-blue-500 to-purple-600 rounded-lg flex items-center justify-center">
               <Ticket className="w-5 h-5 text-white" />
             </div>
-            <span className="text-xl font-bold text-gray-900">TicketFlow</span>
+            <span className="text-xl font-bold text-gray-900">Ticket</span>
           </div>
           <p className="text-center text-gray-600 mt-4">
-            © 2024 TicketFlow. All rights reserved.
+            © GreenSprings School Ticket.
           </p>
         </div>
       </footer>
-
-      {isCreateModalOpen && (
-        <CreateTicketModal
-          onClose={() => setIsCreateModalOpen(false)}
-          isOpen={() => setIsCreateModalOpen(true)}
-        />
-      )}
-      {isLoginModal && (
-        <LoginForm
-          onClose={() => setIsLoginModal(false)}
-          isOpen={() => setIsLoginModal(true)}
-        />
-      )}
+      <AnimatePresence>
+        {isCreateModalOpen && (
+          <CreateTicketModal
+            onClose={() => setIsCreateModalOpen(false)}
+            isOpen={() => setIsCreateModalOpen(true)}
+          />
+        )}
+      </AnimatePresence>
+      {/* Login Modal */}
+      <AnimatePresence>
+        {isLoginModal && (
+          <LoginForm
+            onClose={() => setIsLoginModal(false)}
+            isOpen={() => setIsLoginModal(true)}
+          />
+        )}
+      </AnimatePresence>
     </div>
   );
 }

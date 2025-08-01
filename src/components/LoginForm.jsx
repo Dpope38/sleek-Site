@@ -2,6 +2,7 @@ import { useCallback, useState } from "react";
 import { cn } from "../utility/cn.js";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { motion } from "framer-motion";
 import toast from "react-hot-toast";
 import { useAuth } from "../contexts/AuthContext";
 
@@ -88,10 +89,22 @@ const LoginForm = ({ isOpen, onClose }) => {
       console.log(error);
     }
   };
+  const formVariants = {
+    hidden: { opacity: 0, y: -20 },
+    visible: { opacity: 1, y: 0, transition: { duration: 0.3 } },
+    exit: { opacity: 0, y: -20, transition: { duration: 0.3 } },
+  };
+  // If modal is not open, return null to avoid rendering
 
   if (!isOpen) return null;
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center transition-all duration-300 bg-black/50">
+    <motion.div
+      variants={formVariants}
+      initial="hidden"
+      animate="visible"
+      exit="exit"
+      className="fixed inset-0 z-50 flex items-center justify-center transition-all duration-300 bg-black/50"
+    >
       <div className="relative max-w-md w-full mx-auto p-6 bg-white rounded-lg shadow-lg">
         <button
           className="absolute top-2 right-2 text-gray-400 hover:text-gray-700 text-xl"
@@ -155,7 +168,7 @@ const LoginForm = ({ isOpen, onClose }) => {
           </button>
         </form>
       </div>
-    </div>
+    </motion.div>
   );
 };
 
