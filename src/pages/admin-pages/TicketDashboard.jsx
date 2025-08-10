@@ -4,14 +4,9 @@ import { useFetchTicket } from "../../fetching-mutating/fetchQueries";
 import DataGrid from "../../components/DataGrid";
 
 function TicketGrid() {
-  const [expandedId, setExpandedId] = useState(null);
   const ticketData = useFetchTicket();
   const [selectedTickets, setSelectedTickets] = useState([]); // 2nd varibale
   const [selectAll, setSelectAll] = useState(false);
-
-  // function countByStatus(data, status) {
-  // return data.filter((item) => item.status === status).length;
-  // }
 
   const tickets = ticketData.data?.data;
   const options = {
@@ -33,16 +28,22 @@ function TicketGrid() {
   // if (ticketData) return JSON.stringify(ticketData.data?.data, null, 2);
   if (ticketData.isLoading) return <p>Loading</p>;
 
+  // const getBackgroundClasses = cn({
+  //   "bg-blue-700": ticketDetails.totalTickets === "Total Tickets",
+  //   "bg-yellow-700": title === "Open Tickets",
+  //   "bg-green-700": title === "Resolved Tickets",
+  // });
+
   return (
-    <div className="min-h-screen  px-8  py-5 my-[20px]  ">
-      <h1 className="text-2xl font-poppins  font-semibold mb-3">
+    <div className="min-h-screen  px-8  py-5   ">
+      <h1 className="text-2xl flex   font-poppins mb-7 font-semibold ">
         Tickets DashBoard
       </h1>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 max-w-6xl ">
-        <div className="bg-white flex flex-row items-center  shadow-md rounded-xl p-5  hover:shadow-lg transition">
-          <div className="bg-blue-500 flex justify-center items-center basis-1/3 rounded-2xl hover:shadow-lg transition w-[60px] h-[60px]">
-            <Ticket className="text-amber-100" />
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4  gap-6 max-w-6xl ">
+        <div className="bg-blue-500 flex flex-row text-gray-500items-center  shadow-md rounded-xl p-5  hover:shadow-lg transition">
+          <div className="bg-gray-100 flex justify-center items-center basis-1/3 rounded-2xl hover:shadow-lg transition w-[60px] h-[60px]">
+            <Ticket className="text-blue-400" />
           </div>
           <div className="flex  flex-col basis-2/3 items-center">
             <div className="">
@@ -53,9 +54,9 @@ function TicketGrid() {
             </div>
           </div>
         </div>
-        <div className="bg-white flex items-center shadow-md rounded-xl p-5  hover:shadow-lg transition">
-          <div className="bg-amber-300 flex justify-center items-center rounded-2xl hover:shadow-lg transition w-[60px] h-[60px]">
-            <Hourglass className="text-amber-100" />
+        <div className="bg-amber-300 flex items-center shadow-md rounded-xl p-5  hover:shadow-lg transition">
+          <div className="bg-amber-50 flex justify-center items-center rounded-2xl hover:shadow-lg transition w-[60px] h-[60px]">
+            <Hourglass className="text-amber-400" />
           </div>
           <div className="flex  flex-col basis-2/3 items-center">
             <div className="">
@@ -66,9 +67,9 @@ function TicketGrid() {
             </div>
           </div>
         </div>
-        <div className="bg-white flex  items-center shadow-md rounded-xl p-5  hover:shadow-lg transition">
-          <div className="bg-green-500 flex justify-center items-center rounded-2xl hover:shadow-lg transition w-[60px] h-[60px]">
-            <TicketCheck className="text-amber-100" />
+        <div className="bg-green-500 flex  items-center shadow-md rounded-xl p-5  hover:shadow-lg transition">
+          <div className="bg-gray-100 flex justify-center items-center rounded-2xl hover:shadow-lg transition w-[60px] h-[60px]">
+            <TicketCheck className="text-green-400" />
           </div>
           <div className="flex  flex-col basis-2/3 items-center">
             <div className="">

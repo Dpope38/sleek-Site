@@ -1,7 +1,9 @@
 import React from "react";
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route, useLocation } from "react-router-dom";
 import { QueryClientProvider, QueryClient } from "@tanstack/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
+import { AnimatePresence } from "framer-motion";
+
 import { AuthProvide } from "./contexts/AuthContext";
 import { Toaster } from "react-hot-toast";
 import LandingPage from "./pages/LandingPage";
@@ -34,20 +36,22 @@ function App() {
           }}
         />
         <ReactQueryDevtools initialIsOpen={false} />
-        <Routes>
-          <Route path="/" element={<LandingPage />} />
-          <Route path="/admin" element={<ProtectedRoute />}>
-            <Route path="/admin" element={<AdminPage />}>
-              <Route path="" element={<StatsDashboard />} />
-              <Route path="users" element={<TeamPage />} />
-              <Route path="tickets" element={<TicketGrid />} />
-              <Route path="tickets/:refCode" element={<TIcketDetails />} />
+        <AnimatePresence mode="wait">
+          <Routes location={location} key={location.pathname}>
+            <Route path="/" element={<LandingPage />} />
+            <Route path="/admin" element={<ProtectedRoute />}>
+              <Route path="/admin" element={<AdminPage />}>
+                <Route path="" element={<StatsDashboard />} />
+                <Route path="users" element={<TeamPage />} />
+                <Route path="tickets" element={<TicketGrid />} />
+                <Route path="tickets/:refCode" element={<TIcketDetails />} />
+              </Route>
             </Route>
-          </Route>
-          <Route path="/agent" element={<AgentDashboard />} />
-          <Route path="*" element={<Error404 />} />
-          {/* <Route path="/agent/login" element={<LoginForm />} /> */}
-        </Routes>
+            <Route path="/agent" element={<AgentDashboard />} />
+            <Route path="*" element={<Error404 />} />
+            {/* <Route path="/agent/login" element={<LoginForm />} /> */}
+          </Routes>
+        </AnimatePresence>
       </QueryClientProvider>
     </AuthProvide>
   );

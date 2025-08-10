@@ -1,15 +1,23 @@
-function filterTicket(ticketData, searchTerm){
-    let filteredTickets
-    if(ticketData && Array.isArray(ticketData.data?.data)){
-  filteredTickets = (ticketData.data?.data || []).filter(
-   (ticket) =>
-     ticket.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-     (ticket.description && ticket.description.toLowerCase().includes(searchTerm.toLowerCase()))
-);
-return filteredTickets
+import { useState, useEffect, useRef } from "react";
+
+function useFilterDebounce(value, delay) {
+  const [debouncedValue, setDebouncedValue] = useState(value);
+  const timerRef = useRef();
+
+  useEffect(() => {
+    if (timerRef.current) {
+      clearTimeout(timerRef.current);
     }
-    return []
-   
+    timerRef.current = setTimeout(() => {
+      setDebouncedValue(value);
+    }, delay);
+
+    return () => {
+      clearTimeout(timerRef.current);
+    };
+  }, [value, delay]);
+
+  return debouncedValue;
 }
 
-export {filterTicket}
+export {useFilterDebounce}

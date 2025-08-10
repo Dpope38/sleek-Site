@@ -1,4 +1,4 @@
-import { useQuery} from "@tanstack/react-query";
+import { useQuery, useQueryClient, useMutation} from "@tanstack/react-query";
 import axios from "axios";
 import {useAuth} from "../contexts/AuthContext.jsx"
 import { useMemo } from "react";
@@ -34,3 +34,24 @@ export function useFetchUsers(){
     enabled: !!auth?.token,
     })
 }
+
+
+
+
+export function useCreateUsers(){
+  const queryClient = useQueryClient()
+    const [auth] = useAuth()
+    return useMutation({
+      mutationFn:(data)=>( axios.post( `${import.meta.env.VITE_BASEURL_API}admin/users`,data,{
+        headers:{
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${auth.token}`,
+        }
+      })),
+      onSuccess: ()=> queryClient.invalidateQueries(["userQuery"]),
+       onError: (error) => {
+      console.error("Error updating ticket:", error);
+    },
+    })
+}
+

@@ -7,10 +7,10 @@ import {
   ChartPie,
   CalendarPlus2,
 } from "lucide-react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { cn } from "../utility/cn.js";
 
-const DataGrid = ({ selectedTickets, selectAll, tickets, options }) => {
+const DataGrid = ({ selectAll, tickets, options }) => {
   function formatDateTime(isoString) {
     const date = new Date(isoString);
 
@@ -28,25 +28,6 @@ const DataGrid = ({ selectedTickets, selectAll, tickets, options }) => {
     return date.toLocaleString(undefined, options);
   }
 
-  const handleSelectAll = () => {
-    if (selectAll) {
-      options.setSelectedTickets([]);
-    } else {
-      options.setSelectedTickets(tickets.map((ticket) => ticket.uniqueId));
-    }
-    options.setSelectAll(!selectAll);
-  };
-
-  const handleSelectTicket = (uniqueId) => {
-    if (selectedTickets.includes(uniqueId)) {
-      options.setSelectedTickets(
-        selectedTickets.filter((id) => id !== uniqueId)
-      );
-    } else {
-      options.setSelectedTickets([...selectedTickets, uniqueId]);
-    }
-  };
-
   const getPriorityBadge = (priority) => {
     const styles = {
       HIGH: "bg-red-100 text-red-800 border-red-200",
@@ -55,6 +36,8 @@ const DataGrid = ({ selectedTickets, selectAll, tickets, options }) => {
     };
     return `px-2 py-1 text-xs font-medium rounded-md border ${styles[priority]}`;
   };
+
+  const navigate = useNavigate();
 
   const getStatusBadge = (status) => {
     return cn(`${status}`, {
@@ -84,7 +67,7 @@ const DataGrid = ({ selectedTickets, selectAll, tickets, options }) => {
   };
 
   return (
-    <div className="max-w-6xl my-6  bg-white shadow rounded-lg px-5 pt-4">
+    <div className="max-w-6xl my-6   shadow rounded-lg px-5 pt-4">
       <h2 className="text-lg font-semibold mb-4">Recent Tickets</h2>
       <ul className="">
         {tickets &&
@@ -110,16 +93,15 @@ const DataGrid = ({ selectedTickets, selectAll, tickets, options }) => {
                 >
                   {ticket.status}
                 </span>
-                <button className="text-sm font-semibold text-blue-700 hover:underline">
-                  {
-                    <Link
-                      to={`${ticket.referenceCode}`}
-                      state={options.tickets}
-                    >
-                      View Details
-                    </Link>
+                <button
+                  className="text-sm font-semibold text-blue-700 hover:underline"
+                  onClick={() =>
+                    navigate(`${ticket.referenceCode}`, { state: { ticket } })
                   }
+                >
+                  View Details
                 </button>
+                {console.log(ticket)}
               </div>
             </li>
           ))}
@@ -129,3 +111,14 @@ const DataGrid = ({ selectedTickets, selectAll, tickets, options }) => {
 };
 
 export default DataGrid;
+
+// const handleSelectTicket = (referenceCode, ticket) => {
+//   navigate(`/ticket/${referenceCode}`, {
+//     state: { ticket },
+//     key: referenceCode,
+//   });
+// };
+
+// <Link to={`${ticket.referenceCode}`} key={ticket.id} state={{ boy: "girl" }}>
+//   View Details
+// </Link>;

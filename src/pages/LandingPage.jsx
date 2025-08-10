@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import LoginForm from "../components/LoginForm";
+import { useCreateTicket } from "../fetching-mutating/fetchQueries";
+
 import { motion, stagger, AnimatePresence } from "framer-motion";
 import ITSplash from "../assets/spalsh-I.T.jpg";
 
@@ -14,17 +16,47 @@ import {
   HeadphonesIcon,
 } from "lucide-react";
 import CreateTicketModal from "../components/CreateModal";
-// import { NavLink } from "react-router-dom";
 function LandingPage() {
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
   const [isLoginModal, setIsLoginModal] = useState(false);
-  const [role, setRole] = useState("");
-  // const []
-  // const [tickets, setTickets] = useState([]);
+  const [tickets, setTickets] = useState({
+    name: "",
+    email: "",
+    title: "",
+    description: "",
+    priority: "LOW",
+  });
+  const createTicket = useCreateTicket();
 
-  //    const handleCreateTicket = (newTicket) => {
-  //     setTickets([newTicket, ...tickets]);
-  //   };
+  function handleForm(e) {
+    e.preventDefault();
+    if (
+      !tickets.name ||
+      !tickets.email ||
+      !tickets.title ||
+      !tickets.description
+    ) {
+      alert("Please fill in all fields.");
+      console.log("Please fill in all fields.");
+      return;
+    }
+    createTicket.mutate({
+      name: tickets.name,
+      email: tickets.email,
+      title: tickets.title,
+      description: tickets.description,
+      priority: tickets.priority,
+    });
+    console.log("from creating tickets", tickets);
+    setTickets({
+      name: "",
+      email: "",
+      title: "",
+      description: "",
+      priority: "LOW",
+    });
+    setIsCreateModalOpen(false);
+  }
 
   const features = [
     {
@@ -202,45 +234,8 @@ function LandingPage() {
               alt="I.T Splash "
             />
           </div>
-          <div className="absolute top-100 left-0 blur-sm w-full bg-gray-50 bg-blend-soft-light h-20 z-10" />
         </motion.div>
       </header>
-
-      {/* Hero Section
-      <section className="py-20 bg-gradient-to-br from-blue-50 to-purple-50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center">
-            <h1 className="text-5xl md:text-6xl font-bold text-gray-900 mb-6">
-              lorem Ipsom
-              <span className="bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
-                Support
-              </span>
-            </h1>
-            <p className="text-xl text-gray-600 mb-8 max-w-3xl mx-auto">
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. Commodi
-              voluptates, possimus sint vero maiores illum fuga cum nisi
-              corporis iure officiis
-            </p>
-
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <button
-                // onClick={}
-                className="inline-flex items-center px-8 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-all duration-200 shadow-lg hover:shadow-xl"
-              >
-                Thoughts
-                <ArrowRight className="ml-2 w-5 h-5" />
-              </button>
-
-              <div
-                to="/admin"
-                className="inline-flex items-center px-8 py-3 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors"
-              >
-                thoughts
-              </div>
-            </div>
-          </div>
-        </div>
-      </section> */}
 
       {/* Features Section */}
       <section className="py-20 bg-white">
@@ -295,6 +290,15 @@ function LandingPage() {
       <AnimatePresence>
         {isCreateModalOpen && (
           <CreateTicketModal
+            key="create Ticket"
+            onChange={(event) =>
+              setTickets({
+                ...tickets,
+                [event.target.name]: event.target.value,
+              })
+            }
+            value={tickets}
+            onSubmit={handleForm}
             onClose={() => setIsCreateModalOpen(false)}
             isOpen={() => setIsCreateModalOpen(true)}
           />
@@ -304,6 +308,7 @@ function LandingPage() {
       <AnimatePresence>
         {isLoginModal && (
           <LoginForm
+            key="login"
             onClose={() => setIsLoginModal(false)}
             isOpen={() => setIsLoginModal(true)}
           />

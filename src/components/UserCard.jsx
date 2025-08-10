@@ -39,7 +39,7 @@ function UserCard({ Userdata }) {
                 Check Profile
               </button>
             </div>
-            <div className="bg-linear-to-r/hsl from-fuchsia-800 to-indigo-700 h-20 w-20 flex justify-center items-center rounded-full absolute top-10 left-14">
+            <div className="bg-blue-500 h-20 w-20 flex justify-center items-center rounded-full absolute top-10 left-14">
               <h1 className="bg-linear-to-r from-gray-200 to-blue-300 bg-clip-text text-3xl font-bold text-transparent">
                 {userData.name.charAt(0).toUpperCase()}
               </h1>

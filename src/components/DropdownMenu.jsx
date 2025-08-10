@@ -21,7 +21,7 @@ function DropdownMenu() {
   };
 
   const menuItems = [
-    { label: "Admin", str: "I am Admin" },
+    { label: auth.user?.name, str: auth.user?.role },
     { label: "Logout", str: logout },
     // { label: "Settings", href: "/settings" },
   ];
@@ -33,7 +33,7 @@ function DropdownMenu() {
           onClick={() => setIsOpen((prev) => !prev)}
           className="bg-gray-300 text-gray-700 font-semibold py-2 px-4 rounded inline-flex items-center focus:outline-none"
         >
-          <span className="mr-1">Dropdown</span>
+          <span className="mr-1">{auth?.user.name}</span>
           <span>
             <ChevronDown />
           </span>
@@ -44,7 +44,7 @@ function DropdownMenu() {
             {menuItems.map((item, i) => (
               <li
                 key={i}
-                className="px-4 py-2 hover:bg-gray-100 cursor-pointer"
+                className="px-4 space-y-1.5 py-2 hover:bg-gray-100 cursor-pointer"
               >
                 <h1
                   onClick={item.label === "Logout" && (() => logout())}
@@ -52,7 +52,8 @@ function DropdownMenu() {
                 >
                   {item.label}
                 </h1>
-                <p className="text-xs text-gray-500">{item.str}</p>
+                <hr className="text-gray-200" />
+                <p className="text-l text-gray-500">{item.str}</p>
               </li>
             ))}
           </ul>

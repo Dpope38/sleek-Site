@@ -3,6 +3,7 @@ import { Search, Filter, Clock, AlertTriangle } from "lucide-react";
 import TicketStatus from "../../components/TicketStatus";
 import StatCard from "../../components/StatCard";
 import NavBar from "../../components/NavBar";
+import DropdownMenu from "../../components/DropdownMenu";
 
 const AgentDashboard = () => {
   const [searchTerm, setSearchTerm] = useState("");
@@ -46,20 +47,20 @@ const AgentDashboard = () => {
 
   const stats = [
     {
-      title: "My Open Tickets",
-      value: myTickets.filter((t) => t.status === "open").length,
+      title: "Resolved Tickets",
+      value: "Total",
       icon: Clock,
       color: "blue",
     },
     {
-      title: "In Progress",
-      value: myTickets.filter((t) => t.status === "in-progress").length,
+      title: "Open Tickets",
+      value: "Open",
       icon: AlertTriangle,
       color: "yellow",
     },
     {
-      title: "Resolved Today",
-      value: 3,
+      title: "Total Tickets",
+      value: "Resolved",
       change: "+2 from yesterday",
       changeType: "positive",
       icon: Clock,
@@ -68,83 +69,81 @@ const AgentDashboard = () => {
   ];
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="h-screen overflow-hidden px-4 py-6 bg-gray-100">
       {/* <NavBar userRole="agent" /> */}
-
-      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <div className="mb-8">
-          <h1 className="text-3xl font-bold text-gray-900">My Tickets</h1>
-          <p className="text-gray-600 mt-1">
-            Manage your assigned support tickets
-          </p>
-        </div>
-
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-          {stats.map((stat, index) => (
-            <StatCard key={index} {...stat} />
-          ))}
-        </div>
-
-        <div className="bg-white rounded-lg border border-gray-200 shadow-sm">
-          <div className="p-6 border-b border-gray-200">
-            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between space-y-4 sm:space-y-0">
-              <h2 className="text-xl font-semibold text-gray-900">
-                Assigned Tickets
-              </h2>
-
-              <div className="flex items-center space-x-3">
-                <div className="relative">
-                  <Search className="w-5 h-5 absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
-                  <input
-                    type="text"
-                    placeholder="Search tickets..."
-                    value={searchTerm}
-                    onChange={(e) => setSearchTerm(e.target.value)}
-                    className="pl-10 pr-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 w-64"
-                  />
-                </div>
-
-                <select
-                  value={statusFilter}
-                  onChange={(e) => setStatusFilter(e.target.value)}
-                  className="px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                >
-                  <option value="all">All Status</option>
-                  <option value="open">Open</option>
-                  <option value="in-progress">In Progress</option>
-                  <option value="resolved">Resolved</option>
-                </select>
-
-                <button className="p-2 text-gray-400 hover:text-gray-600 border border-gray-300 rounded-md">
-                  <Filter className="w-5 h-5" />
-                </button>
-              </div>
-            </div>
+      <nav className=" fixed w-full my-4 top-0 left-0   h-[70px] ">
+        <div className="  flex justify-between  sm:px-6 lg:px-8">
+          <div className="flex items-center justify-between py-4">
+            <h1 className="text-2xl font-bold text-gray-900">
+              Agent Dashboard
+            </h1>
           </div>
-
-          <div className="p-6">
-            {filteredTickets.length > 0 ? (
-              <div className="space-y-4">
-                {filteredTickets.map((ticket) => (
-                  <TicketStatus key={ticket.id} ticket={ticket} />
-                ))}
-              </div>
-            ) : (
-              <div className="text-center py-12">
-                <Clock className="w-12 h-12 text-gray-400 mx-auto mb-4" />
-                <h3 className="text-lg font-medium text-gray-900 mb-2">
-                  No tickets found
-                </h3>
-                <p className="text-gray-600">
-                  {searchTerm || statusFilter !== "all"
-                    ? "Try adjusting your search or filter"
-                    : "No tickets assigned to you yet"}
-                </p>
-              </div>
-            )}
+          <div className="flex items-center justify-between py-4">
+            <DropdownMenu />
           </div>
         </div>
-      </main>
+      </nav>
+
+      <header className=" h-[calc(50vh-10rem)] mt-17 overflow-hidden px-4 sm:px-6 lg:px-8 py-8">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
+          {stats.length > 0 &&
+            stats.map((stat) => (
+              <StatCard
+                key={stat.title}
+                title={stat.title}
+                value={stat.value}
+                icon={stat.icon}
+                color={stat.color}
+              />
+            ))}
+        </div>
+      </header>
+      <div className="relative mb-2">
+        <Search className="w-5 h-5 absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
+        <input
+          type="text"
+          placeholder="Search tickets..."
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)}
+          className="pl-10 pr-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 w-64"
+        />
+      </div>
+      <select
+        value={statusFilter}
+        onChange={(e) => setStatusFilter(e.target.value)}
+        className="px-3 py-2 border mb-2 border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+      >
+        <option value="all">All Status</option>
+        <option value="open">Open</option>
+        <option value="in-progress">In Progress</option>
+        <option value="resolved">Resolved</option>
+      </select>
+
+      <button className="p-2 text-gray-400 hover:text-gray-600 border border-gray-300 rounded-md">
+        <Filter className="w-5 h-5" />
+      </button>
+
+      <div className="overflow-y-auto">
+        {filteredTickets.length > 0 ? (
+          <div className="space-y-4">
+            {filteredTickets.map((ticket) => (
+              <TicketStatus key={ticket.id} ticket={ticket} />
+            ))}
+          </div>
+        ) : (
+          <div className="text-center py-12">
+            <Clock className="w-12 h-12 text-gray-400 mx-auto mb-4" />
+            <h3 className="text-lg font-medium text-gray-900 mb-2">
+              No tickets found
+            </h3>
+            <p className="text-gray-600">
+              {searchTerm || statusFilter !== "all"
+                ? "Try adjusting your search or filter"
+                : "No tickets assigned to you yet"}
+            </p>
+          </div>
+        )}
+      </div>
     </div>
   );
 };

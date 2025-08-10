@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
+import toast from "react-hot-toast";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useAuth } from "../contexts/AuthContext.jsx";
 
@@ -59,8 +60,13 @@ function FormDropDown({ refCode }) {
   const filterAdmin = dataTeam?.filter((user) => user.role === "AGENT");
 
   const handleUpdateAgent = (e) => {
-    e.preventDefault();
-    updateAgent.mutate({ agentEmail });
+    try {
+      e.preventDefault();
+      updateAgent.mutate({ agentEmail });
+      toast.success("Agent assigned successfully!");
+    } catch (error) {
+      console.error("Error updating agent:", error);
+    }
   };
   return (
     <form onSubmit={handleUpdateAgent} className="flex items-center gap-2">

@@ -16,8 +16,7 @@ const modalVariants = {
   exit: { opacity: 0, scale: 0.8, transition: { duration: 0.3 } },
 };
 
-const CreateTicketModal = ({ isOpen, onClose, onSubmit }) => {
-  // const [isModal, setIsModal] = useState(true);
+const CreateTicketModal = ({ isOpen, onClose, onSubmit, onChange, value }) => {
   if (!isOpen) return null;
   // No local state here; all state and handlers come from parent via props.
   return (
@@ -44,10 +43,26 @@ const CreateTicketModal = ({ isOpen, onClose, onSubmit }) => {
         <form onSubmit={onSubmit} className="space-y-4">
           <div>
             <label className="block text-sm font-poppins font-medium text-gray-800 mb-1">
-              Customer Name
+              Full Name
             </label>
             <input
               type="text"
+              value={value.name}
+              onChange={onChange}
+              name="name" // Assuming 'name' is a field in the ticket object
+              required
+              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+            />
+          </div>
+          <div>
+            <label className="block text-sm font-poppins font-medium text-gray-800 mb-1">
+              Email
+            </label>
+            <input
+              type="text"
+              value={value.email}
+              onChange={onChange}
+              name="email" // Assuming 'email' is a field in the ticket object
               required
               className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
@@ -60,7 +75,9 @@ const CreateTicketModal = ({ isOpen, onClose, onSubmit }) => {
             <input
               type="text"
               required
-              // value={formData.title}
+              name="title" // Assuming 'title' is a field in the ticket object
+              value={value.title}
+              onChange={onChange}
               className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
           </div>
@@ -71,8 +88,10 @@ const CreateTicketModal = ({ isOpen, onClose, onSubmit }) => {
             </label>
             <textarea
               required
+              name="description" // Assuming 'description' is a field in the ticket object
               rows={4}
-              // value={formData.description}
+              value={value.description}
+              onChange={onChange}
               className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
           </div>
@@ -82,13 +101,15 @@ const CreateTicketModal = ({ isOpen, onClose, onSubmit }) => {
               Priority
             </label>
             <select
-              // value={formData.priority}
+              value={value.priority}
+              onChange={onChange}
+              name="priority" // Assuming 'priority' is a field in the ticket object
               className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
             >
-              <option value="low">Low</option>
-              <option value="medium">Medium</option>
-              <option value="high">High</option>
-              <option value="urgent">Urgent</option>
+              <option value="LOW">LOW</option>
+              <option value="MEDIUM">MEDIUM</option>
+              <option value="HIGH">HIGH</option>
+              <option value="URGENT">URGENT</option>
             </select>
           </div>
 

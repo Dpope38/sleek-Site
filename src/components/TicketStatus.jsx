@@ -1,7 +1,7 @@
 import React from "react";
 import { Clock, User, AlertCircle, CheckCircle, XCircle } from "lucide-react";
 
-const TicketStatus = ({ ticket, onClick }) => {
+const TicketStatus = ({ ticket }) => {
   const getPriorityColor = (priority) => {
     switch (priority) {
       case "urgent":
@@ -48,10 +48,7 @@ const TicketStatus = ({ ticket, onClick }) => {
   };
 
   return (
-    <div
-      className="bg-white rounded-lg border border-gray-200 p-6 hover:shadow-md transition-all duration-200 cursor-pointer hover:border-blue-300"
-      onClick={onClick}
-    >
+    <div className="bg-white rounded-lg border border-gray-200 p-6 hover:shadow-md transition-all duration-200  hover:border-blue-300">
       <div className="flex items-start justify-between mb-4">
         <div className="flex-1">
           <h3 className="text-lg font-semibold text-gray-900 mb-2 line-clamp-2">

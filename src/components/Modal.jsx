@@ -1,11 +1,8 @@
 import React from "react";
 
-function Modal({ onClose, desc, children, ...props }) {
+function Modal({ onClose, desc, children, className }) {
   return (
-    <div
-      className={`w-[50%] relative flex flex-col  ${props}`}
-      onClick={() => onClose(false)}
-    >
+    <div className={className} onClick={() => onClose(false)}>
       <p className=" text-2xl text-cyan-600 font-stretch-95%  mb-2 font-semibold">
         {desc}
       </p>

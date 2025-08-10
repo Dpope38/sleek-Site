@@ -1,4 +1,4 @@
-import { useQuery} from "@tanstack/react-query";
+import { useQuery, useMutation, useQueryClient} from "@tanstack/react-query";
 import axios from "axios";
 import {useAuth} from "../contexts/AuthContext.jsx"
 
@@ -44,6 +44,26 @@ const fetchStats = async (auth)=>{
     }
 }
 
+ async function createTicket(auth,tickets){
+  try{
+    const ticketData = await axios.post(
+       `${import.meta.env.VITE_BASEURL_API}create-ticket`,
+       tickets,
+       {
+        headers:{
+          "Content-Type":"application/json",
+          Authorization:`Bearer ${auth?.token}`
+        }
+       }
+
+    )
+    return ticketData.data
+
+  }catch(error){
+    console.log("error from creating data >>>>", error)
+  }
+ }
+
 export function useFetchStats(){
     const [auth] = useAuth()
     return useQuery({
@@ -61,4 +81,19 @@ export function useFetchTicket(){
 
     enabled: !!auth?.token,
     })
+}
+
+export function useCreateTicket() {
+  const [auth] = useAuth()
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: (tickets) => createTicket(auth, tickets),
+    onSuccess: () => {
+      queryClient.invalidateQueries(["fetchTicket"]);
+    },
+    onError: (error) => {
+      console.error("Error creating ticket:", error);
+    },
+  })
+  
 }

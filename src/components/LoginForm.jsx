@@ -94,6 +94,12 @@ const LoginForm = ({ isOpen, onClose }) => {
     visible: { opacity: 1, y: 0, transition: { duration: 0.3 } },
     exit: { opacity: 0, y: -20, transition: { duration: 0.3 } },
   };
+
+  const childVariants = {
+    hidden: { opacity: 0, y: -20 },
+    visible: { opacity: 1, y: 0, transition: { duration: 0.3 } },
+    exit: { opacity: 0, y: -20, transition: { duration: 0.3 } },
+  };
   // If modal is not open, return null to avoid rendering
 
   if (!isOpen) return null;
@@ -118,7 +124,11 @@ const LoginForm = ({ isOpen, onClose }) => {
           Green Springs School Email Validation
         </h2>
 
-        <form onSubmit={formHandler} className="space-y-4">
+        <motion.form
+          variants={childVariants}
+          onSubmit={formHandler}
+          className="space-y-4"
+        >
           <div>
             <label
               htmlFor="email"
@@ -166,7 +176,7 @@ const LoginForm = ({ isOpen, onClose }) => {
           <button type="submit" disabled={!isValid} className={buttonClasses}>
             {isValid ? "Submit Form" : "Enter Valid Email"}
           </button>
-        </form>
+        </motion.form>
       </div>
     </motion.div>
   );

@@ -1,5 +1,7 @@
 import React from "react";
 import { ArrowUpRight, ArrowDownRight, Minus, TrendingUp } from "lucide-react";
+import { cn } from "../utility/cn.js";
+import { nav } from "framer-motion/client";
 
 const StatsCard = ({
   title,
@@ -26,10 +28,16 @@ const StatsCard = ({
     }
   };
 
+  const getBackgroundClasses = cn({
+    "bg-blue-700": title === "Total Tickets",
+    "bg-yellow-700": title === "Open Tickets",
+    "bg-green-700": title === "Resolved Tickets",
+  });
+
   const getChangeColor = (type) => {
     switch (type) {
       case "positive":
-        return "text-green-600";
+        return "text-white";
       case "negative":
         return "text-red-600";
       case "neutral":
@@ -53,11 +61,15 @@ const StatsCard = ({
   };
 
   return (
-    <div className="bg-white rounded-lg border border-gray-200 p-6 hover:shadow-md transition-all duration-200">
-      <div className="flex items-center justify-between">
+    <div
+      className={`rounded-[20px] border-gray-200 border-2 p-6 hover:shadow-md transition-all duration-200 ${getBackgroundClasses}`}
+    >
+      <div className="flex items-center  justify-between">
         <div className="flex-1">
-          <p className="text-sm font-medium text-gray-600 mb-1">{title}</p>
-          <p className="text-3xl font-bold text-gray-900 mb-2">{value}</p>
+          <p className="text-sm  font-poppins font-bold text-gray-50 mb-1">
+            {title}
+          </p>
+          <p className="text-3xl font-bold text-gray-100 mb-2">{value}</p>
           {change && (
             <p
               className={`text-sm font-medium flex items-center ${getChangeColor(

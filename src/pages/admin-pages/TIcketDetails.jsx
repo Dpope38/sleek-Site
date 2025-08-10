@@ -9,28 +9,75 @@ import {
   Tag,
   Mail,
 } from "lucide-react";
-import FormDropDown from "../../components/FormDropDown.jsx";
-// import { useMutation, useQueryClient } from "@tanstack/react-query";
-
+import toast from "react-hot-toast";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useState } from "react";
+import axios from "axios";
+import FormDropDown from "../../components/FormDropDown.jsx";
+import { useAuth } from "../../contexts/AuthContext.jsx";
+
 import TextArea from "../../components/TextArea";
-import { useParams, useLocation } from "react-router-dom";
-import { useUpdateTicket } from "../../fetching-mutating/updateUser.js";
-import { useFetchUsers } from "../../fetching-mutating/userQuery.js";
+import { useParams } from "react-router-dom";
+import { useFetchTicket } from "../../fetching-mutating/fetchTickets.js";
 import formatDateTime from "../../utility/dataFormat.js";
 import getStatusBadge from "../../utility/dataFormat.js";
 import Accordion from "../../components/Accordion";
 
 function TIcketDetails() {
-  const [selectAgent, setSelectAgent] = useState("");
-  const [status, setStatus] = useState({
-    status: "OPEN",
+  const [selectStatus, setSelectStatus] = useState({
+    status: "PENDING",
   });
-  const location = useLocation();
-  const locationState = location.state;
-  const { refCode } = useParams();
+  const [auth] = useAuth();
 
-  const ticketData = locationState.find((ticket) => ticket);
+  const tickets = useFetchTicket();
+  const idParams = useParams();
+  const ticketsArray = tickets?.data?.data;
+  const ticketId = idParams.refCode;
+  const queryClient = useQueryClient();
+
+  const updateStatus = useMutation({
+    mutationFn: (data) => {
+      return axios.put(
+        `${import.meta.env.VITE_BASEURL_API}admin/tickets/${ticketId}`,
+        data,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${auth.token}`,
+          },
+        }
+      );
+    },
+    onSuccess: (ticketId) => {
+      queryClient.invalidateQueries(["fetchTicket", ticketId]);
+    },
+    onError: (error) => {
+      console.error("Error updating ticket:", error);
+    },
+  });
+
+  const handleStatusForm = (e) => {
+    try {
+      e.preventDefault();
+      updateStatus.mutate({
+        status: selectStatus.status,
+      });
+
+      console.log("update status...", updateStatus?.data?.data);
+
+      toast.success("Ticket status updated successfully!");
+    } catch (error) {
+      console.error("Error handling status form:", error);
+    }
+  };
+  // console.log(tickets);
+
+  const ticketData = ticketsArray?.find(
+    (ticket) => ticket.referenceCode === ticketId
+  );
+
+  if (tickets.isLoading) return <p>Loading...</p>;
+  if (tickets.isError) return <p>Error: {tickets.error.message}</p>;
 
   return (
     <div className=" mt-3 px-11">
@@ -56,7 +103,7 @@ function TIcketDetails() {
         <div className="grid  py-4  gap-6 lg:grid-cols-3">
           <div className="col-span-3 rounded-2xl px-3 py-3 border border-gray-200 space-y-6">
             <div className="flex items-center space-x-2">
-              <h1 className="font-poppins font-semibold">{` TK-ID #tick ${ticketData.referenceCode}`}</h1>
+              {/* <h1 className="font-poppins font-semibold">{` TK-ID #tick ${ticketData.referenceCode}`}</h1> */}
               <span
                 className={`rounded-[11px] text-sm ${getStatusBadge(
                   ticketData.status
@@ -130,7 +177,7 @@ function TIcketDetails() {
             <h1 className="font-poppins font-semibold"> Update Status</h1>
           </div>
           <div className="flex items-center gap-2">
-            <form className="space-y-4 w-full">
+            <form onSubmit={handleStatusForm} className="space-y-4 w-full">
               <label
                 htmlFor="status"
                 className="block text-sm font-poppins font-medium text-gray-700 mb-1"
@@ -139,8 +186,8 @@ function TIcketDetails() {
               </label>
               <select
                 name="status"
-                value={status.status}
-                onChange={(e) => setStatus(e.target.value)}
+                value={selectStatus.status}
+                onChange={(e) => setSelectStatus({ status: e.target.value })}
                 className="w-full px-3 py-2 hover:bg-gray-200 cursor-pointer space-x-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
               >
                 <option value="PENDING">Pending</option>
